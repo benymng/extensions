@@ -10,8 +10,8 @@ import {
   openCommandPreferences,
   openExtensionPreferences,
   showHUD,
+  getPreferenceValues,
 } from "@raycast/api";
-import { primaryAction } from "../types/preference";
 
 export function ActionsNotes(props: {
   stickiesNote: StickiesNote;
@@ -20,6 +20,7 @@ export function ActionsNotes(props: {
   children?: ReactNode;
 }) {
   const { stickiesNote, frontmostApps, mutate, children } = props;
+  const { primaryAction } = getPreferenceValues<Preferences>();
   enum PrimaryAction {
     PASTE = "Paste",
     Copy = "Copy",
@@ -46,7 +47,8 @@ export function ActionsNotes(props: {
         onAction={async () => {
           if (primaryAction === PrimaryAction.PASTE) {
             await Clipboard.paste(stickiesNote.content);
-            await showHUD(`📝 Pasted to  ${frontmostApps.data[0].name}`);
+            const targetApp = frontmostApps?.data?.[0]?.name ? ` ${frontmostApps.data[0].name}` : "Active App";
+            await showHUD(`📝 Pasted to ${targetApp}`);
           } else {
             await Clipboard.copy(stickiesNote.content);
             await showHUD(`📋 Copied to clipboard`);
@@ -63,7 +65,8 @@ export function ActionsNotes(props: {
             await showHUD(`📋 Copied to clipboard`);
           } else {
             await Clipboard.paste(stickiesNote.content);
-            await showHUD(`📝 Pasted to  ${frontmostApps.data[0].name}`);
+            const targetApp = frontmostApps?.data?.[0]?.name ? ` ${frontmostApps.data[0].name}` : "Active App";
+            await showHUD(`📝 Pasted to ${targetApp}`);
           }
           await mutate();
         }}

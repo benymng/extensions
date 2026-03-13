@@ -1,12 +1,11 @@
 import path from "node:path";
 import * as os from "node:os";
 import * as fs from "fs-extra";
-import { closeMainWindow, environment, open } from "@raycast/api";
+import { closeMainWindow, environment, open, getPreferenceValues } from "@raycast/api";
 import { spawnSync } from "node:child_process";
 import { isEmpty, showStickiesNotRunningHUD, truncate } from "./common-utils";
 import { isStickiesRunning, newStickiesNote, showStickiesWindows, toggleStickiesWindows } from "./applescript-utils";
 import { STICKIES_PATH } from "./constants";
-import { autoOpen } from "../types/preference";
 
 const stickiesDir = path.join(os.homedir(), "Library/Containers/com.apple.Stickies/Data/Library/Stickies");
 const stickiesTempDir = path.join(environment.supportPath, "temp");
@@ -141,6 +140,7 @@ export async function showStickies(isToggle: boolean = false) {
       await newStickiesNote();
     }
   } else {
+    const { autoOpen } = getPreferenceValues<Preferences>();
     if (autoOpen) {
       await open(STICKIES_PATH);
       await showStickiesWindows();

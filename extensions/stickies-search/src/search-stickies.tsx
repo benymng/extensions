@@ -1,9 +1,19 @@
-import { Action, Color, Detail, Icon, List, closeMainWindow, showToast, Toast } from "@raycast/api";
+import {
+  Action,
+  Color,
+  Detail,
+  Icon,
+  List,
+  closeMainWindow,
+  showToast,
+  Toast,
+  getPreferenceValues,
+} from "@raycast/api";
 import { useStickies } from "./hooks/useStickies";
 import { StickiesNote } from "./utils/stickies-utils";
 import { useStickiesMenu, switchToSticky } from "./useStickiesMenu";
 import { useMemo, useState } from "react";
-import { showAsMarkdown, showDetailMetadata } from "./types/preference";
+
 import { useFrontmostApp } from "./hooks/useFrontmostApp";
 import Fuse from "fuse.js";
 import { ActionsNotes } from "./components/actions-notes";
@@ -11,6 +21,7 @@ import { StickiesListEmptyView } from "./components/stickies-list-empty-view";
 import { StickiesEmptyView } from "./components/stickies-empty-view";
 
 export default function SearchStickies() {
+  const { showAsMarkdown, showDetailMetadata } = getPreferenceValues<Preferences>();
   const [searchText, setSearchText] = useState("");
   const { data: stickiesNotesData, isLoading, mutate } = useStickies();
   const { stickies: openWindowNames } = useStickiesMenu();
@@ -116,21 +127,21 @@ export default function SearchStickies() {
     <Detail
       isLoading={isLoading}
       actions={
-        <ActionsNotes stickiesNote={fuseStickiesNotes[0]} frontmostApps={frontmostApps} mutate={mutate}>
-          <SwitchAction note={fuseStickiesNotes[0]} />
+        <ActionsNotes stickiesNote={stickiesNotes[0]} frontmostApps={frontmostApps} mutate={mutate}>
+          <SwitchAction note={stickiesNotes[0]} />
         </ActionsNotes>
       }
-      markdown={showAsMarkdown ? fuseStickiesNotes[0].content : "```" + "\\n" + fuseStickiesNotes[0].content + "\\n```"}
+      markdown={showAsMarkdown ? stickiesNotes[0]?.content : "```" + "\\n" + stickiesNotes[0]?.content + "\\n```"}
       metadata={
         showDetailMetadata ? (
           <List.Item.Detail.Metadata>
             <List.Item.Detail.Metadata.Label
               title={"Modified"}
-              text={fuseStickiesNotes[0].rawStat.mtime.toLocaleString()}
+              text={stickiesNotes[0]?.rawStat.mtime.toLocaleString()}
             />
             <List.Item.Detail.Metadata.Label
               title={"Created"}
-              text={fuseStickiesNotes[0].rawStat.birthtime.toLocaleString()}
+              text={stickiesNotes[0]?.rawStat.birthtime.toLocaleString()}
             />
           </List.Item.Detail.Metadata>
         ) : undefined

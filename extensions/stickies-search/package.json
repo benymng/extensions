@@ -26,6 +26,47 @@
       "mode": "no-view"
     }
   ],
+  "preferences": [
+    {
+      "name": "autoOpen",
+      "title": "Auto Open",
+      "description": "Automatically open Stickies when searching notes.",
+      "type": "checkbox",
+      "required": false,
+      "default": true,
+      "label": "Open Stickies app"
+    },
+    {
+      "name": "showAsMarkdown",
+      "title": "Show as Markdown",
+      "description": "Render stickies content as Markdown instead of code block.",
+      "type": "checkbox",
+      "required": false,
+      "default": false,
+      "label": "Render as Markdown"
+    },
+    {
+      "name": "showDetailMetadata",
+      "title": "Show Detail Metadata",
+      "description": "Show created and modified times in the detail view.",
+      "type": "checkbox",
+      "required": false,
+      "default": false,
+      "label": "Show creation & modification times"
+    },
+    {
+      "name": "primaryAction",
+      "title": "Primary Action",
+      "description": "Set the primary action when pressing Return.",
+      "type": "dropdown",
+      "required": false,
+      "default": "Paste",
+      "data": [
+        { "title": "Paste to Active App", "value": "Paste" },
+        { "title": "Copy to Clipboard", "value": "Copy" }
+      ]
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.104.9",
     "@raycast/utils": "^1.17.0",
